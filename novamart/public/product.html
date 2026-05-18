@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaMart | Buy Product</title>
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/animations.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="/features/assistant.css">
+    <link rel="stylesheet" href="/features/visual-search.css">
+    <link rel="stylesheet" href="/features/gamification.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .product-page-section {
+            padding: 20px 0 60px 0;
+            background: var(--bg-surface);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            margin-top: 40px;
+        }
+
+        .breadcrumb {
+            padding: 15px 20px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+        .breadcrumb a { color: #878787; margin-right: 5px; }
+        .breadcrumb a:hover { color: var(--primary-color); }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 450px 1fr 300px;
+            gap: 30px;
+            padding: 0 20px;
+        }
+        
+        /* Gallery */
+        .gallery-main {
+            width: 100%;
+            height: 450px;
+            background: #fff;
+            border: 1px solid #f0f0f0;
+            padding: 20px;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .gallery-main img {
+            max-width: 100%; max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* Info */
+        .detail-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .detail-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .detail-rating {
+            display: flex; align-items:center; gap: 10px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        .rating-badge {
+            background: #388e3c; color: white; padding: 3px 8px; border-radius: 12px; font-weight: 500; font-size:0.8rem;
+        }
+
+        .price-section {
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+        .detail-price {
+            font-size: 2rem;
+            font-weight: 500;
+            color: #212121;
+        }
+        .mrp {
+            color: #878787; text-decoration: line-through; margin-left:10px; font-size: 1.1rem;
+        }
+        
+        .offers-list {
+            margin-bottom: 20px;
+            list-style: none;
+        }
+        .offers-list li {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: flex; align-items: flex-start; gap: 8px;
+        }
+        .offers-list i { color: #388e3c; margin-top: 2px;}
+
+        .detail-desc {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #212121;
+            white-space: pre-line;
+        }
+        
+        /* Action Box (Amazon style right column) */
+        .action-box {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            height: fit-content;
+        }
+        .action-price {
+            font-size: 1.5rem; font-weight: 500; margin-bottom: 10px;
+        }
+        .stock-status {
+            font-size: 1.1rem; font-weight: 500; color: #388e3c; margin-bottom: 15px;
+        }
+        .stock-status.low { color: #b12704; }
+        .stock-status.out { color: #b12704; }
+
+        .qty-select {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        .qty-select select {
+            padding: 5px; border-radius: 4px; border: 1px solid #a6a6a6; box-shadow: 0 1px 2px rgba(15,17,17,.15);
+            background: #f0f2f2;
+        }
+
+        .btn-stack {
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .btn-cart {
+            background: #ffd814; color: #0f1111; border: 1px solid #fcd200; border-radius: 100px; padding: 12px; font-size:1rem; cursor:pointer; font-weight:500;
+        }
+        .btn-cart:hover { background: #f7ca00; }
+        
+        .btn-buy {
+            background: #ffa41c; color: #0f1111; border: 1px solid #ff8f00; border-radius: 100px; padding: 12px; font-size:1rem; cursor:pointer; font-weight:500;
+        }
+        .btn-buy:hover { background: #fa8900; }
+
+        /* Similar Products */
+        .similar-section { padding: 40px 20px; }
+        
+        @media (max-width: 1024px) {
+            .detail-grid { grid-template-columns: 1fr 1fr; }
+            .action-box { grid-column: 1 / -1; display:flex; gap: 20px; justify-content: space-between; align-items:center;}
+            .btn-stack { flex-direction: row; flex: 1; }
+        }
+        @media (max-width: 768px) {
+            .detail-grid { grid-template-columns: 1fr; }
+            .gallery-main { height: 300px; }
+            .action-box { flex-direction: column; align-items: flex-start;}
+            .btn-stack { width: 100%; flex-direction: column;}
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <img src="/images/logo.png" alt="NovaMart" style="height: 40px; vertical-align: middle; margin-right: 10px;">
+                <span>NovaMart</span>
+            </a>
+            <button class="menu-toggle" id="menuToggle"><i data-feather="menu"></i></button>
+            <div class="nav-search">
+                <input type="text" id="globalSearchInput" placeholder="Search...">
+                <button onclick="executeSearch()"><i data-feather="search" style="width: 18px;"></i></button>
+            </div>
+            <div class="nav-actions">
+                <button class="nav-link-btn" id="authUserBtn" onclick="window.location.href='/auth.html'">Login</button>
+                <button class="nav-link-btn" onclick="window.location.href='/cart.html'" style="position: relative;">
+                    <i data-feather="shopping-cart"></i> Cart
+                    <span class="badge" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Secondary Navbar -->
+    <div class="secondary-nav">
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="/products.html?category=electronics">Electronics</a></li>
+                <li><a href="/products.html?category=fashion">Fashion</a></li>
+                <li><a href="/products.html?category=home">Home & Furniture</a></li>
+                <li><a href="/products.html?category=appliances">Appliances</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Product Loader -->
+    <div id="loadingView" class="container store-layout" style="margin-top:40px;">
+        <div class="skeleton" style="height: 500px; width: 100%;"></div>
+        <div class="skeleton" style="height: 500px; width: 100%;"></div>
+    </div>
+
+    <main class="container product-page-section" id="productView" style="display: none;">
+        
+        <div class="breadcrumb">
+            <a href="/">Home</a> > <a href="/products.html" id="bcCategory">Category</a> > <span id="bcName">Product</span>
+        </div>
+
+        <div class="detail-grid fade-up">
+            <!-- Left: Image -->
+            <div class="gallery-main relative reveal fade-left">
+                <img id="pdImage" src="" alt="Product Image">
+            </div>
+            
+            <!-- Middle: Info -->
+            <div class="detail-info reveal fade-right">
+                <h1 class="detail-title" id="pdTitle">Product Name Goes Here</h1>
+                
+                <div class="detail-rating">
+                    <span class="rating-badge"><span id="pdRatingVal">4.5</span> ★</span>
+                    <a href="#">1,234 Ratings & Reviews</a>
+                </div>
+                
+                <div class="price-section">
+                    <div class="detail-price">$<span id="pdPrice">0</span> <span class="mrp">M.R.P: $<span id="pdMrp">0</span></span></div>
+                    <div style="font-size:0.8rem; margin-top:5px;">Inclusive of all taxes</div>
+                </div>
+
+                <ul class="offers-list">
+                    <li><i data-feather="tag" style="width:16px;"></i> <strong>Bank Offer:</strong> 5% Unlimited Cashback on NovaBank Credit Card</li>
+                    <li><i data-feather="tag" style="width:16px;"></i> <strong>Special Price:</strong> Get extra 10% off (price inclusive of cashback)</li>
+                    <li><i data-feather="refresh-cw" style="width:16px; color:#2874f0;"></i> 7 Days Replacement Policy</li>
+                </ul>
+                
+                <h3 style="font-size: 1.1rem; margin-bottom:10px;">About this item</h3>
+                <div class="detail-desc" id="pdDesc">
+                    Full product description goes here.
+                </div>
+            </div>
+
+            <!-- Right: Action Box -->
+            <div class="action-box reveal fade-up">
+                <div class="action-price">$<span id="pdPriceAction">0</span></div>
+                <div style="color: #007185; font-size:0.9rem; margin-bottom:15px;">FREE Delivery within 2 days.</div>
+                
+                <div id="pdStock" class="stock-status">In Stock</div>
+                
+                <div class="qty-select">
+                    <label>Qty:</label>
+                    <select id="pdQty">
+                        <option value="1">1</option><option value="2">2</option>
+                        <option value="3">3</option><option value="4">4</option>
+                    </select>
+                </div>
+
+                <div class="btn-stack">
+                    <button class="btn-cart" id="btnAddCart">Add to Cart</button>
+                    <button class="btn-buy" id="btnBuyNow">Buy Now</button>
+                </div>
+                <div style="font-size:0.8rem; color:#878787; text-align:center; margin-top:15px; display:flex; align-items:center; justify-content:center; gap:5px;"><i data-feather="lock" style="width:12px;"></i> Secure transaction</div>
+            </div>
+        </div>
+        
+        <!-- Customer Reviews Section -->
+        <div class="reviews-section reveal fade-up" style="margin-top: 50px; border-top: 1px solid #e0e0e0; padding-top: 30px; max-width: 800px; margin-left: auto; margin-right: auto;">
+            <h2 style="margin-bottom: 20px;">Customer Reviews</h2>
+            
+            <div id="review-form-container" style="background:#f9f9f9; padding:20px; border-radius:8px; margin-bottom:30px; border: 1px solid #e0e0e0;">
+                <h3 style="margin-bottom:15px; font-size:1.1rem; border-bottom:1px solid #ddd; padding-bottom:10px;">Write a Review</h3>
+                <div id="review-auth-msg" style="color:#b12704; margin-bottom:10px; display:none;">Please <a href="/auth.html" style="text-decoration: underline; color:#0056d2;">log in</a> to write a review.</div>
+                
+                <form id="reviewForm" style="display: none;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:500;">Rating:</label>
+                        <select id="reviewRating" style="padding:8px; width:150px; border:1px solid #a6a6a6; border-radius:4px; background:#f0f2f2;" required>
+                            <option value="5" selected>5 Stars - Excellent</option>
+                            <option value="4">4 Stars - Good</option>
+                            <option value="3">3 Stars - Average</option>
+                            <option value="2">2 Stars - Poor</option>
+                            <option value="1">1 Star - Terrible</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:500;">Your Review:</label>
+                        <textarea id="reviewText" rows="4" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; font-family:inherit;" placeholder="What did you like or dislike? What did you use this product for?" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-buy" style="padding: 10px 20px; font-size: 1rem;">Submit Review</button>
+                    <div id="review-resp" style="margin-top:10px; font-weight:500;"></div>
+                </form>
+            </div>
+            
+            <div id="reviewsList">
+                <p style="color:#878787;">Loading reviews...</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer style="margin-top: 40px;">
+        <div class="container text-center">
+            <p>&copy; 2024 NovaMart.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/js/toast.js"></script>
+    <script src="/js/animations.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/chatbot.js"></script>
+    <script src="/features/assistant.js"></script>
+    <script src="/features/visual-search.js"></script>
+    <script src="/features/gamification.js"></script>
+    <script src="/features/suggestions.js"></script>
+    
+    <script>
+        feather.replace();
+        function executeSearch() {
+            const val = document.getElementById('globalSearchInput').value;
+            if(val) window.location.href = `/products.html?search=${encodeURIComponent(val)}`;
+        }
+        document.getElementById('globalSearchInput').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') executeSearch();
+        });
+    </script>
+    <script src="/js/product.js"></script> <!-- we will need to patch product.js mapping IDs but most map cleanly -->
+</body>
+</html>

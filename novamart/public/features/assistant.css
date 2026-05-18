@@ -1,0 +1,158 @@
+/* AI Assistant Floating UI */
+#nova-assistant {
+    position: fixed;
+    bottom: 30px;
+    right: 100px;
+    z-index: 1000;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.assistant-bubble {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #2874f0 0%, #0a49a8 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.assistant-bubble:hover {
+    transform: scale(1.1);
+}
+
+.assistant-window {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    transform-origin: bottom right;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: scale(0.8) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.assistant-header {
+    background: #2874f0;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.assistant-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.assistant-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.msg {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 18px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.msg.ai {
+    background: white;
+    color: #333;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.msg.user {
+    background: #2874f0;
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+.assistant-input {
+    padding: 15px;
+    background: white;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+}
+
+.assistant-input input {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 8px 15px;
+    outline: none;
+    font-size: 0.9rem;
+}
+
+.assistant-input button {
+    background: #2874f0;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Suggested Products in Chat */
+.ai-product-suggestions {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px 0;
+    margin-top: 10px;
+}
+
+.mini-card {
+    min-width: 120px;
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.mini-card img {
+    width: 100%;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 5px;
+}
+
+.mini-card div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 600;
+}

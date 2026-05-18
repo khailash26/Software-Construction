@@ -1,0 +1,33 @@
+/* Mobile Menu Toggle */
+.menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    color: var(--text-white);
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+@media (max-width: 900px) {
+    .nav-search {
+        display: none; /* Hide large search bar on mobile, could put it somewhere else */
+    }
+    
+    .nav-actions {
+        gap: 15px;
+    }
+
+    .secondary-nav {
+        display: none; /* Hide sub-nav on mobile for simplicity */
+    }
+
+    main {
+        padding-top: 60px; /* Adjust padding if secondary nav is hidden */
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 10px;
+    }
+}

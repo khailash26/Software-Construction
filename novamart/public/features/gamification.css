@@ -1,0 +1,80 @@
+/* Spin Wheel Gamification UI */
+.vs-modal.gamified-modal {
+    z-index: 3000;
+}
+
+.wheel-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 20px auto;
+}
+
+.wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 5px solid #333;
+    position: relative;
+    overflow: hidden;
+    transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1);
+    background: #fff;
+}
+
+.wheel-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.wheel-segment {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    left: 50%;
+    top: 50%;
+    transform-origin: 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+    padding-left: 50px;
+}
+
+.wheel-segment:nth-child(1) { transform: rotate(0deg) skewY(-30deg); background: #ff4757; }
+.wheel-segment:nth-child(2) { transform: rotate(60deg) skewY(-30deg); background: #2f3542; }
+.wheel-segment:nth-child(3) { transform: rotate(120deg) skewY(-30deg); background: #2ed573; }
+.wheel-segment:nth-child(4) { transform: rotate(180deg) skewY(-30deg); background: #70a1ff; }
+.wheel-segment:nth-child(5) { transform: rotate(240deg) skewY(-30deg); background: #ffa502; }
+.wheel-segment:nth-child(6) { transform: rotate(300deg) skewY(-30deg); background: #5352ed; }
+
+.wheel-pointer {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 40px;
+    background: #ff4757;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+    z-index: 10;
+}
+
+.coupon-display {
+    display: none;
+    background: #f1f2f6;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    border: 2px dashed #2f3542;
+}
+
+.coupon-code {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #2f3542;
+    margin: 10px 0;
+}

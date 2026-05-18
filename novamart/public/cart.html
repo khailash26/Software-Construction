@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaMart | Shopping Cart</title>
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/animations.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="/features/assistant.css">
+    <link rel="stylesheet" href="/features/visual-search.css">
+    <link rel="stylesheet" href="/features/gamification.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .cart-page {
+            padding: 20px 0 60px 0;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        /* Cart List */
+        .cart-list-container {
+            background: var(--bg-surface);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+        
+        .cart-header {
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex; justify-content: space-between; align-items: baseline;
+        }
+        .cart-header h1 { font-size: 1.5rem; font-weight: 500; }
+        
+        .cart-item {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .cart-img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+        }
+        
+        .cart-info { flex: 1; }
+        .cart-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #212121;
+            margin-bottom: 5px;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .cart-stock { color: #388e3c; font-size: 0.8rem; font-weight: 500; margin-bottom: 10px; display: block;}
+        
+        .cart-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #212121;
+        }
+        
+        .cart-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .qty-controls {
+            display: flex; align-items: center; border: 1px solid #e0e0e0; border-radius: 4px;
+        }
+        .qty-btn {
+            background: #fafafa; border: none; padding: 5px 12px; cursor: pointer; font-size: 1.2rem;
+        }
+        .qty-btn:hover { background: #f0f0f0; }
+        .qty-input {
+            width: 40px; text-align: center; border: none; border-left: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; font-family: var(--font-main);
+        }
+
+        .remove-link {
+            font-size: 0.95rem; color: var(--primary-color); cursor: pointer; font-weight: 500; background: none; border: none;
+        }
+        .remove-link:hover { text-decoration: underline; }
+
+        /* Summary */
+        .cart-summary {
+            background: var(--bg-surface);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+        .summary-title {
+            font-size: 1.1rem; font-weight: 500; color: #878787; text-transform: uppercase; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px; margin-bottom: 15px;
+        }
+        .summary-row {
+            display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 1rem; color: #212121;
+        }
+        .summary-total {
+            border-top: 1px dashed #e0e0e0; border-bottom: 1px dashed #e0e0e0; margin: 20px 0; padding: 20px 0; font-size: 1.2rem; font-weight: bold;
+        }
+        
+        .empty-state {
+            text-align: center; padding: 60px 20px;
+        }
+        .empty-state h2 { font-weight: 400; margin-bottom: 10px; }
+        .empty-state p { margin-bottom: 20px; color: #878787; }
+
+        @media (max-width: 900px) {
+            .cart-page { grid-template-columns: 1fr; }
+            .cart-summary { position: static; }
+        }
+        @media (max-width: 600px) {
+            .cart-item { flex-direction: column; align-items: center; text-align: center;}
+            .cart-controls { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <img src="/images/logo.png" alt="NovaMart" style="height: 40px; vertical-align: middle; margin-right: 10px;">
+                <span>NovaMart</span>
+            </a>
+            <div class="nav-search">
+                <input type="text" id="globalSearchInput" placeholder="Search for products...">
+                <button onclick="executeSearch()"><i data-feather="search" style="width: 18px;"></i></button>
+            </div>
+            <div class="nav-actions">
+                <button class="nav-link-btn" id="authUserBtn" onclick="window.location.href='/auth.html'">Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        
+        <div id="loadingIndicator" style="text-align: center; padding: 100px;">
+            <div class="loader-spinner" style="margin: 0 auto;"></div>
+        </div>
+
+        <div class="cart-page fade-up" id="cartContent" style="display: none;">
+            
+            <div class="cart-list-container">
+                <div class="cart-header">
+                    <h1>Shopping Cart</h1>
+                    <a href="/products.html" style="font-size:0.9rem; font-weight:500;">Continue Shopping</a>
+                </div>
+                
+                <div id="cartListItems" class="stagger-container">
+                    <!-- Injected via JS -->
+                </div>
+                
+                <!-- Bottom space inside list -->
+                <div style="padding: 20px; display:flex; justify-content:flex-end;">
+                    <button class="action-btn orange" style="padding: 15px 40px; font-size: 1.1rem; box-shadow: 0 1px 2px rgba(0,0,0,0.2);" id="placeOrderBtnMob" onclick="window.location.href='/checkout.html'">PLACE ORDER</button>
+                </div>
+            </div>
+
+            <div class="cart-summary hide-on-mobile reveal fade-left">
+                <div class="summary-title">Price Details</div>
+                
+                <div class="summary-row">
+                    <span>Price (<span id="sumItems">0</span> items)</span>
+                    <span>$<span id="sumSubtotal">0.00</span></span>
+                </div>
+                <div class="summary-row" style="color: #388e3c;">
+                    <span>Discount</span>
+                    <span>-$<span id="sumDiscount">5.00</span></span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery Charges</span>
+                    <span style="color: #388e3c;">FREE</span>
+                </div>
+                
+                <div class="summary-row summary-total">
+                    <span>Total Amount</span>
+                    <span>$<span id="sumTotal">0.00</span></span>
+                </div>
+                
+                <div style="color: #388e3c; font-size: 0.9rem; font-weight: 500; margin-bottom: 20px;">
+                    You will save $<span id="saveAmount">5.00</span> on this order
+                </div>
+
+                <button class="action-btn orange" style="width: 100%; padding: 15px; font-size: 1.1rem; box-shadow: 0 1px 2px rgba(0,0,0,0.2);" id="checkoutBtn" onclick="window.location.href='/checkout.html'">
+                    PLACE ORDER
+                </button>
+                
+                <!-- Security icons -->
+                <div style="margin-top: 20px; display:flex; justify-content:center; gap:10px; color:#878787;">
+                    <i data-feather="shield"></i> Safe and Secure Payments
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer style="margin-top:40px;">
+        <div class="container text-center">
+            <p>&copy; 2024 NovaMart.</p>
+        </div>
+    </footer>
+
+    <script src="/js/toast.js"></script>
+    <script src="/js/animations.js"></script>
+    <script src="/js/app.js"></script> <!-- Core sets up App.user -->
+    <script src="/features/assistant.js"></script>
+    <script src="/features/visual-search.js"></script>
+    <script src="/features/gamification.js"></script>
+    <script src="/features/suggestions.js"></script>
+    <script>feather.replace();</script>
+    <script>
+        function executeSearch() {
+            const val = document.getElementById('globalSearchInput').value;
+            if(val) window.location.href = `/products.html?search=${encodeURIComponent(val)}`;
+        }
+        document.getElementById('globalSearchInput').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') executeSearch();
+        });
+    </script>
+    <script src="/js/cart.js"></script>
+
+</body>
+</html>

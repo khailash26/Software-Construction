@@ -1,0 +1,290 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Lexend:wght@400;600;700&display=swap');
+
+:root {
+    /* Professional E-Commerce Palette (Flipkart/Amazon Insired) */
+    --bg-body: #f1f3f6; /* Soft light gray for background */
+    --bg-surface: #ffffff;
+    --bg-nav: #2874f0; /* Action Blue */
+    --border-light: #e0e0e0;
+    
+    --primary-color: #2874f0;
+    --action-orange: #ff9f00; /* Distinct Buy Now, Cart Add color */
+    
+    --text-primary: #212121;
+    --text-secondary: #878787;
+    --text-white: #ffffff;
+    
+    --shadow-card: 0 1px 4px 0 rgba(0,0,0,0.1);
+    --shadow-hover: 0 4px 16px 0 rgba(0,0,0,0.15);
+    
+    --font-main: 'Roboto', Arial, sans-serif;
+    --font-alt: 'Lexend', sans-serif;
+    --transition-fast: 0.2s ease;
+}
+
+/* Light/Dark mode isn't typical for Amazon/Flipkart by default, but keeping standard variable architecture */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    line-height: 1.5;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--action-orange);
+}
+
+/* --- Layout --- */
+main {
+    flex: 1;
+    padding-top: 80px; /* Space for fixed nav */
+}
+
+.container {
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* --- Utilities --- */
+.surface-panel {
+    background: var(--bg-surface);
+    border-radius: 4px;
+    box-shadow: var(--shadow-card);
+    padding: 24px;
+}
+
+.text-center { text-align: center; }
+
+/* --- Buttons --- */
+.action-btn {
+    display: inline-block;
+    padding: 10px 24px;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-white);
+    background: var(--primary-color);
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+    text-align: center;
+}
+
+.action-btn:hover {
+    background: #0056d2; /* Darker blue */
+}
+
+.action-btn.orange {
+    background: var(--action-orange);
+}
+.action-btn.orange:hover {
+    background: #e08b00; /* Darker orange */
+}
+
+.action-btn:disabled {
+    background: #e0e0e0;
+    color: #878787;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* --- Navigation --- */
+nav.navbar {
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    height: 60px;
+    z-index: 1000;
+    background: var(--bg-nav);
+    color: var(--text-white);
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: var(--font-alt);
+    color: var(--text-white);
+    letter-spacing: -0.5px;
+}
+
+.logo::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 32px;
+    background: url('/images/logo.png') no-repeat center center;
+    background-size: contain;
+    filter: brightness(0) invert(1); /* Make it white to match nav */
+}
+
+.logo span {
+    background: linear-gradient(90deg, #fff 70%, var(--action-orange) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Override a:hover for logo */
+.logo:hover { color: var(--text-white); }
+
+/* Global Search Bar embedded in Nav */
+.nav-search {
+    flex: 1;
+    max-width: 500px;
+    margin: 0 30px;
+    position: relative;
+    display: flex;
+}
+.nav-search input {
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 2px;
+    outline: none;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.13);
+}
+.nav-search button {
+    background: var(--text-white);
+    border: none;
+    padding: 0 15px;
+    cursor: pointer;
+    color: var(--primary-color);
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-link-btn {
+    color: var(--text-white);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.nav-link-btn:hover {
+    color: var(--text-white);
+}
+
+.badge {
+    position: absolute;
+    top: -8px; right: -8px;
+    background: #ff6161;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 20px; height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Secondary Nav for Categories */
+.secondary-nav {
+    position: fixed;
+    top: 60px; left: 0; width: 100%;
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-card);
+    height: 40px;
+    display: flex;
+    align-items: center;
+    z-index: 999;
+}
+.secondary-nav .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+.secondary-nav a {
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+.secondary-nav a:hover {
+    color: var(--primary-color);
+}
+
+/* --- Forms --- */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.input-group input, .input-group select, .input-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border-light);
+    border-radius: 2px;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    outline: none;
+}
+.input-group input:focus {
+    border-color: var(--primary-color);
+}
+
+/* --- Footer --- */
+footer {
+    background: #172337;
+    color: var(--text-white);
+    margin-top: auto;
+    padding: 40px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+footer a {
+    color: var(--text-secondary);
+}
+footer a:hover {
+    color: var(--text-white);
+}

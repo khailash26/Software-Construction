@@ -1,0 +1,78 @@
+html {
+    scroll-behavior: smooth;
+}
+
+/* Loader / Spinner */
+#loader {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #ffffff;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+}
+
+.loader-spinner {
+    width: 50px; height: 50px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+}
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* Base Reveal Class */
+.reveal {
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+    will-change: transform, opacity;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: none !important;
+}
+
+/* Reveal Variations */
+.fade-in { opacity: 0; transform: none; }
+.fade-up { transform: translateY(40px); }
+.fade-down { transform: translateY(-40px); }
+.fade-left { transform: translateX(40px); }
+.fade-right { transform: translateX(-40px); }
+
+/* Staggered Children Animation */
+.stagger-container .reveal {
+    transition-delay: calc(var(--stagger-idx, 0) * 0.1s);
+}
+
+/* Card Hover Spread */
+.card-hover {
+    transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-hover:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-5px);
+}
+
+/* Skeleton Loading State */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+    border-radius: 4px;
+}
+@keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Parallax Base */
+.parallax-bg {
+    transition: transform 0.1s ease-out;
+    will-change: transform;
+}
+

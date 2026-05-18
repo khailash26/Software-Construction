@@ -1,0 +1,94 @@
+/* Visual Search UI */
+.visual-search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.vs-icon-btn {
+    background: none;
+    border: none;
+    color: #878787;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+.vs-icon-btn:hover {
+    color: var(--primary-color);
+}
+
+/* Modal */
+.vs-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.vs-content {
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    position: relative;
+    animation: vsPop 0.3s ease-out;
+}
+
+@keyframes vsPop {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.vs-drop-zone {
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    padding: 40px 20px;
+    margin: 20px 0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.vs-drop-zone:hover, .vs-drop-zone.dragover {
+    background: #f0f7ff;
+    border-color: var(--primary-color);
+}
+
+.vs-results {
+    margin-top: 20px;
+    display: none;
+}
+
+.vs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.vs-loader {
+    display: none;
+    margin: 20px auto;
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
